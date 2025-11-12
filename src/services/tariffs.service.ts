@@ -3,6 +3,27 @@ import { WBTariff, WBWarehouse } from "#types/wb-tariffs.types.js";
 
 class TariffsService {
     /**
+     * Конвертировать строку с запятой в число
+     * "0,07" -> 0.07
+     * "46" -> 46
+     * "-" -> null
+     */
+    private parseNumber(value: string | number | null | undefined): number | null {
+        if (value === null || value === undefined || value === "" || value === "-") {
+            return null;
+        }
+
+        if (typeof value === "number") {
+            return value;
+        }
+
+        const normalized = value.replace(",", ".");
+        const parsed = parseFloat(normalized);
+
+        return isNaN(parsed) ? null : parsed;
+    }
+
+    /**
      * Сохранить или обновить тарифы за определенную дату
      */
     async upsertTariffs(date: string, warehouses: WBWarehouse[]): Promise<void> {
@@ -11,10 +32,10 @@ class TariffsService {
                 date,
                 warehouse_name: warehouse.warehouseName,
                 box_delivery_and_storage_expr: warehouse.boxDeliveryAndStorageExpr || null,
-                box_delivery_base: warehouse.boxDeliveryBase || null,
-                box_delivery_liter: warehouse.boxDeliveryLiter || null,
-                box_storage_base: warehouse.boxStorageBase || null,
-                box_storage_liter: warehouse.boxStorageLiter || null,
+                box_delivery_base: this.parseNumber(warehouse.boxDeliveryBase),
+                box_delivery_liter: this.parseNumber(warehouse.boxDeliveryLiter),
+                box_storage_base: this.parseNumber(warehouse.boxStorageBase),
+                box_storage_liter: this.parseNumber(warehouse.boxStorageLiter),
             })
         );
 

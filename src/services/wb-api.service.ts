@@ -13,12 +13,18 @@ class WBApiService {
 
     /**
      * Получить тарифы для коробов от WB API
+     * @param date - дата в формате YYYY-MM-DD (по умолчанию - сегодня)
      */
-    async getTariffs(): Promise<WBTariffsResponse> {
+    async getTariffs(date?: string): Promise<WBTariffsResponse> {
+        const targetDate = date || new Date().toISOString().split("T")[0];
+
         try {
             const response = await axios.get<WBTariffsResponse>(this.apiUrl, {
                 headers: {
                     Authorization: this.apiToken,
+                },
+                params: {
+                    date: targetDate,
                 },
             });
 

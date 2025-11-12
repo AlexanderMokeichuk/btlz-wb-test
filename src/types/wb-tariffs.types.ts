@@ -9,12 +9,13 @@ export interface WBTariffsResponse {
 }
 
 export interface WBWarehouse {
-    boxDeliveryAndStorageExpr: string;
-    boxDeliveryBase: number;
-    boxDeliveryLiter: number;
-    boxStorageBase: number;
-    boxStorageLiter: number;
+    boxDeliveryAndStorageExpr?: string;
+    boxDeliveryBase: string | number;
+    boxDeliveryLiter: string | number;
+    boxStorageBase: string | number;
+    boxStorageLiter: string | number;
     warehouseName: string;
+    geoName?: string;
 }
 
 export interface WBTariff {
