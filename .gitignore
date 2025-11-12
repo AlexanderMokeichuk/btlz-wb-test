@@ -2,3 +2,12 @@ node_modules
 .local
 .env
 dist
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Credentials
+credentials.json
