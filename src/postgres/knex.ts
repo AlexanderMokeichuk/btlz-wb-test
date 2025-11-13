@@ -33,7 +33,6 @@ function logSeedRun(result: [string[]]) {
     for(const seed of result[0]) {
         console.log("- " + seed?.split(/\/|\\/).pop());
     }
-    // Ran 5 seed files
 }
 
 function logSeedMake(name: string) {

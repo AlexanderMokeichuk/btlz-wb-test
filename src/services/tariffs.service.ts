@@ -2,12 +2,6 @@ import knex from "#postgres/knex.js";
 import { WBTariff, WBWarehouse } from "#types/wb-tariffs.types.js";
 
 class TariffsService {
-    /**
-     * Конвертировать строку с запятой в число
-     * "0,07" -> 0.07
-     * "46" -> 46
-     * "-" -> null
-     */
     private parseNumber(value: string | number | null | undefined): number | null {
         if (value === null || value === undefined || value === "" || value === "-") {
             return null;
@@ -23,9 +17,6 @@ class TariffsService {
         return isNaN(parsed) ? null : parsed;
     }
 
-    /**
-     * Сохранить или обновить тарифы за определенную дату
-     */
     async upsertTariffs(date: string, warehouses: WBWarehouse[]): Promise<void> {
         const tariffs: Omit<WBTariff, "id" | "created_at" | "updated_at">[] = warehouses.map(
             (warehouse) => ({
@@ -59,20 +50,9 @@ class TariffsService {
             }
         });
 
-        console.log(`✅ Upserted ${tariffs.length} tariffs for date: ${date}`);
+        console.log(`Upserted ${tariffs.length} tariffs for date: ${date}`);
     }
 
-    /**
-     * Получить тарифы за определенную дату
-     */
-    async getTariffsByDate(date: string): Promise<WBTariff[]> {
-        return knex("wb_tariffs").where({ date }).orderBy("warehouse_name");
-    }
-
-    /**
-     * Получить все тарифы, отсортированные по коэффициенту
-     * (для Google Sheets)
-     */
     async getAllTariffsSortedByCoefficient(): Promise<WBTariff[]> {
         return knex("wb_tariffs")
             .select("*")
