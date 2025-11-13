@@ -275,7 +275,3 @@ docker compose up postgres
 ## Автор
 
 Alexander Mokeichuk
-
-## Лицензия
-
-ISC
